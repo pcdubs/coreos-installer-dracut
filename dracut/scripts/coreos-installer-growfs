@@ -39,6 +39,9 @@ cryptsetup resize ${crypt}
 lvm pvresize /dev/mapper/${crypt}
 
 lvm vgchange -ay rootvg
+lvm lvextend -l +100%FREE /dev/rootvg/rootlv
+e2fsck -f /dev/rootvg/rootlv
+resize2fs /dev/rootvg/rootlv
 
 if [[ ! -e /dev/disk/by-label/root ]]; then
     dm=$(blkid --label root)
